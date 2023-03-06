@@ -1,8 +1,6 @@
-// ignore_for_file: sort_child_properties_last, prefer_const_constructors, avoid_unnecessary_containers
+// ignore_for_file: sort_child_properties_last, prefer_const_constructors, avoid_unnecessary_containers, use_key_in_widget_constructors
 
 import "package:flutter/material.dart";
-import "package:flutter_upload_files/screens/fetch_client.dart";
-
 import "../models/post_mode.dart";
 import "../services/post_services.dart";
 
@@ -46,19 +44,21 @@ class _FetchPageState extends State<FetchPage> {
           itemCount: posts?.length,
           itemBuilder: (context, index) {
             return Container(
-              child: Column(children: [
-                Text(
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  posts![index].title!,
-                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-                ),
-                Text(
-                  overflow: TextOverflow.ellipsis,
-                  posts![index].body!,
-                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.w400),
-                ),
-              ]),
+              child: Column(
+                children: [
+                  Text(
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    posts![index].title!,
+                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                    overflow: TextOverflow.ellipsis,
+                    posts![index].body!,
+                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.w400),
+                  ),
+                ],
+              ),
             );
           },
         ),
