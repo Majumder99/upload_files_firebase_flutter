@@ -1,47 +1,69 @@
+// ignore_for_file: sort_child_properties_last, prefer_const_constructors, avoid_unnecessary_containers
+
 import "package:flutter/material.dart";
+import "package:flutter_upload_files/screens/fetch_client.dart";
+
+import "../models/post_mode.dart";
+import "../services/post_services.dart";
 
 class FetchPage extends StatefulWidget {
-  const FetchPage({super.key});
+  const FetchPage({Key? key});
 
   @override
   State<FetchPage> createState() => _FetchPageState();
 }
 
 class _FetchPageState extends State<FetchPage> {
+  List<Post>? posts;
+  bool isLoaded = false;
+
+  @override
+  void initState() {
+    super.initState();
+    getData();
+  }
+
+  getData() async {
+    // posts
+    posts = await PostServices().getPosts();
+    if (posts != null) {
+      setState(() {
+        isLoaded = true;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.all(20.0),
-          child: Column(
-            children: [
-              FlutterLogo(
-                style: FlutterLogoStyle.markOnly,
-              ),
-              TextButton(
-                  onPressed: () {},
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Text(
-                        "GET",
-                        style: TextStyle(
-                            fontSize: 30,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.blue),
-                      ),
-                      Text(
-                        "Fetch Users",
-                        style: TextStyle(
-                            fontSize: 30,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.grey),
-                      ),
-                    ],
-                  ))
-            ],
-          ),
+      appBar: AppBar(
+        title: Text("Posts"),
+        centerTitle: true,
+      ),
+      body: Visibility(
+        visible: isLoaded,
+        child: ListView.builder(
+          itemCount: posts?.length,
+          itemBuilder: (context, index) {
+            return Container(
+              child: Column(children: [
+                Text(
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  posts![index].title!,
+                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                ),
+                Text(
+                  overflow: TextOverflow.ellipsis,
+                  posts![index].body!,
+                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.w400),
+                ),
+              ]),
+            );
+          },
+        ),
+        replacement: Center(
+          child: CircularProgressIndicator(),
         ),
       ),
     );
